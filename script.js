@@ -2,53 +2,45 @@
 const GOAL_CANS = 25;        // Total items needed to collect
 let currentCans = 0;         // Current number of items collected
 let gameActive = false;      // Tracks if game is currently running
-let spawnInterval;          // Holds the interval for spawning items
+let currentGridSize = 6;     // Current grid size
 
-// Creates the 3x3 game grid where items will appear
-function createGrid() {
+// Creates a game grid of specified size
+function createGrid(gridSize = currentGridSize) {
   const grid = document.querySelector('.game-grid');
   grid.innerHTML = ''; // Clear any existing grid cells
-  for (let i = 0; i < 9; i++) {
+  const totalCells = gridSize * gridSize;
+  for (let i = 0; i < totalCells; i++) {
     const cell = document.createElement('div');
     cell.className = 'grid-cell'; // Each cell represents a grid square
     grid.appendChild(cell);
   }
+  // Update CSS grid columns
+  grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
 }
 
 // Ensure the grid is created when the page loads
 createGrid();
 
-// Spawns a new item in a random grid cell
-function spawnWaterCan() {
-  if (!gameActive) return; // Stop if the game is not active
-  const cells = document.querySelectorAll('.grid-cell');
-  
-  // Clear all cells before spawning a new water can
-  cells.forEach(cell => (cell.innerHTML = ''));
-
-  // Select a random cell from the grid to place the water can
-  const randomCell = cells[Math.floor(Math.random() * cells.length)];
-
-  // Use a template literal to create the wrapper and water-can element
-  randomCell.innerHTML = `
-    <div class="water-can-wrapper">
-      <div class="water-can"></div>
-    </div>
-  `;
+// Show difficulty selection buttons
+function showDifficultyButtons() {
+  document.getElementById('start-game').style.display = 'none';
+  document.getElementById('difficulty-buttons').style.display = 'flex';
 }
 
-// Initializes and starts a new game
-function startGame() {
-  if (gameActive) return; // Prevent starting a new game if one is already active
+// Hide difficulty buttons and start game
+function startGameWithDifficulty(gridSize) {
+  document.getElementById('difficulty-buttons').style.display = 'none';
+  currentGridSize = gridSize;
   gameActive = true;
-  createGrid(); // Set up the game grid
-  spawnInterval = setInterval(spawnWaterCan, 1000); // Spawn water cans every second
+  createGrid(gridSize); // Set up the game grid
 }
 
 function endGame() {
   gameActive = false; // Mark the game as inactive
-  clearInterval(spawnInterval); // Stop spawning water cans
 }
 
-// Set up click handler for the start button
-document.getElementById('start-game').addEventListener('click', startGame);
+// Set up click handlers
+document.getElementById('start-game').addEventListener('click', showDifficultyButtons);
+document.getElementById('easy-btn').addEventListener('click', () => startGameWithDifficulty(5));
+document.getElementById('medium-btn').addEventListener('click', () => startGameWithDifficulty(7));
+document.getElementById('hard-btn').addEventListener('click', () => startGameWithDifficulty(10));

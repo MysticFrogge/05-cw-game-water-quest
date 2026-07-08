@@ -75,25 +75,144 @@ h1 img {
   color: #333;
 }
 
+.game-stage {
+  position: relative;
+  margin: 0 auto;
+  max-width: 540px;
+  min-height: 320px;
+  padding: 12px;
+  border: 3px solid #2E9DF7;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f4fbff 0%, #dff4ff 100%);
+  overflow: visible; /* allow water-source/tank to sit outside the stage without clipping */
+}
+
+.menu-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 296px;
+  text-align: center;
+}
+
+.menu-screen h2 {
+  font-size: 22px;
+  color: #2E9DF7;
+  margin-bottom: 10px;
+}
+
+.round-complete-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 296px;
+  text-align: center;
+  animation: popUp 0.4s cubic-bezier(0.17, 0.67, 0.34, 2);
+}
+
+.round-complete-screen h2 {
+  font-size: 34px;
+  font-weight: bold;
+  color: #159A48;
+  margin: 0 0 16px;
+}
+
+.round-complete-screen p {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 24px;
+}
+
+.round-failed-screen h2 {
+  color: #F5402C;
+}
+
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 0;
   margin: 0 auto;
-  max-width: 500px;
+  width: min(100%, 540px);
+  aspect-ratio: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.water-source {
+  position: absolute;
+  left: -90px;
+  background-image: url('img/waterpump.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 2;
+  animation: popUp 0.5s cubic-bezier(0.17, 0.67, 0.34, 2);
+}
+
+.water-source.active {
+  filter: brightness(1.15) saturate(1.2);
+  transform: scale(1.05);
+}
+
+.water-tank {
+  position: absolute;
+  right: -90px;
+  background-image: url('img/Watertank_Empty.png');
+  /* Use contain so the whole image is always visible (no cropping) */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  pointer-events: none;
+  z-index: 2;
+  animation: popUp 0.5s cubic-bezier(0.17, 0.67, 0.34, 2);
+}
+
+.water-tank.active {
+  filter: brightness(1.05) saturate(1.05);
+  transform: scale(1.03);
 }
 
 .grid-cell {
-  background-color: #e8e8e8;
-  border-radius: 8px;
-  aspect-ratio: 1;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform 0.2s;
   position: relative;
   overflow: hidden;
+  padding: 0;
+}
+
+.grid-cell:hover {
+  transform: translateY(-1px);
+}
+
+.pipe-piece {
+  width: 105%;
+  height: 105%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  margin: -2.5%;
+}
+
+.grid-cell.pipe-activated {
+  box-shadow: inset 0 0 0 3px rgba(79, 203, 83, 0.45);
+}
+
+.grid-cell.pipe-selected {
+  outline: 3px solid #ff902a;
+  outline-offset: -3px;
 }
 
 .water-can-wrapper {

@@ -3,24 +3,40 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Water Quest</title>
+  <title>Waterworks</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <div class="container">
-    <h1>Water Quest</h1>
-    <p class="game-instructions">Collect 20 items to complete the game!</p>
+    <h1>Waterworks</h1>
+    <p class="game-instructions">See how many cans you can fill!</p>
     <div class="stats">
-      <p>Cans Collected: <span id="current-cans">0</span></p>
-      <p>Time Left: <span id="timer">30</span>s</p>
+      <p>Cans Filled: <span id="current-cans">0</span></p>
+      <p>Time Left: <span id="timer">25</span>s</p>
     </div>
     <div id="achievements" class="achievement"></div>
-    <div class="game-grid"></div>
-    <button id="start-game">Start Game</button>
-    <div id="difficulty-buttons" class="difficulty-buttons" style="display: none;">
-      <button id="easy-btn">Easy</button>
-      <button id="medium-btn">Medium</button>
-      <button id="hard-btn">Hard</button>
+    <div class="game-stage">
+      <div id="menu-screen" class="menu-screen">
+        <h2>Choose a Difficulty</h2>
+        <div class="difficulty-buttons">
+          <button id="easy-btn">Easy</button>
+          <button id="medium-btn">Medium</button>
+          <button id="hard-btn">Hard</button>
+        </div>
+      </div>
+      <div class="game-grid" style="display: none;"></div>
+      <div id="water-source" class="water-source" style="display: none;" aria-hidden="true"></div>
+      <div id="water-tank" class="water-tank" style="display: none;" aria-hidden="true"></div>
+      <div id="round-complete-screen" class="round-complete-screen" style="display: none;">
+        <h2>Round completed!</h2>
+        <p>Total cans filled: <span id="round-complete-cans">0</span></p>
+        <button id="continue-btn">Continue to next round</button>
+      </div>
+      <div id="round-failed-screen" class="round-complete-screen round-failed-screen" style="display: none;">
+        <h2>Round failed</h2>
+        <p>Final cans filled: <span id="round-failed-cans">0</span></p>
+        <button id="restart-btn">Restart</button>
+      </div>
     </div>
   </div>
   <script src="script.js"></script>

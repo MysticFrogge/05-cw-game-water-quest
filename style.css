@@ -23,20 +23,25 @@ Fonts:
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: Proxima Nova;
   margin: 0;
   padding: 30px;
-  background-color: #f0f0f0;
+  background-color: #2E9DF7;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .container {
+  width: 100%;
   max-width: 750px;
   margin: 50px auto;
   background-color: #fff;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  flex: 1 0 auto;
 }
 
 h1 {
@@ -276,4 +281,48 @@ button:hover {
 .difficulty-buttons button {
   display: inline-block;
   margin: 0;
+}
+
+.site-footer {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: 40px;
+  margin-bottom: -30px; /* cancels body's bottom padding so it sits flush at the very bottom */
+  background-color: #FFC907;
+  color: #333;
+  text-align: center;
+  padding: 20px 15px;
+}
+
+.site-footer a {
+  color: #2E9DF7;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+html, body {
+  height: 100%;
+}
+
+.site-footer {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-bottom: -30px;
+  background-color: #FFC907;
+  color: #333;
+  text-align: center;
+  padding: 20px 15px;
+  flex-shrink: 0; /* keeps footer from getting squeezed */
 }

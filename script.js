@@ -15,6 +15,22 @@ let swapsLocked = false;     // Prevents pipe movement after activation
 let baseTimerSeconds = 25;
 const MIN_ROUND_TIME = 10;
 const ROUND_TIME_STEP = 2;
+
+// Sound effect file paths. Adjust these if your audio files live in a
+// different folder than "sounds/".
+const SOUND_TILE_CLICK = 'sounds/tile_click.m4a';
+const SOUND_TILE_SWAP = 'sounds/tile_swap.m4a';
+const SOUND_MENU_CLICK = 'sounds/menu_click.m4a';
+const SOUND_JUG_FILL = 'sounds/jug_fill.mp3';
+
+// Plays a sound effect. Creates a fresh Audio object each call so that
+// rapid, overlapping plays (e.g. quick successive clicks) don't cut each
+// other off, and swallows playback errors (e.g. if a file is missing or
+// autoplay is blocked before user interaction).
+function playSound(src) {
+  const audio = new Audio(src);
+  audio.play().catch(() => {});
+}
  
 // List of pipe pieces that can appear in the grid.
 const pipeTypes = [
@@ -392,6 +408,7 @@ function activateWaterSource() {
 
     if (tankConnected) {
       tank.style.backgroundImage = "url('img/Watertank_Full.png')";
+      playSound(SOUND_JUG_FILL);
       currentCans += 1;
       updateCansDisplay();
       setTimeout(() => {
@@ -531,17 +548,20 @@ function handlePipeCellClick(event) {
   }
  
   if (!selectedPipeCell) {
+    playSound(SOUND_TILE_CLICK);
     selectedPipeCell = cell;
     cell.classList.add('pipe-selected');
     return;
   }
  
   if (selectedPipeCell === cell) {
+    playSound(SOUND_TILE_CLICK);
     selectedPipeCell.classList.remove('pipe-selected');
     selectedPipeCell = null;
     return;
   }
  
+  playSound(SOUND_TILE_SWAP);
   swapPipeCells(selectedPipeCell, cell);
   selectedPipeCell.classList.remove('pipe-selected');
   selectedPipeCell = null;
@@ -716,11 +736,26 @@ timeLeft = baseTimerSeconds;
 updateTimerDisplay();
  
 // Set up click handlers
-document.getElementById('easy-btn').addEventListener('click', () => startGameWithDifficulty(5));
-document.getElementById('medium-btn').addEventListener('click', () => startGameWithDifficulty(7));
-document.getElementById('hard-btn').addEventListener('click', () => startGameWithDifficulty(10));
-document.getElementById('continue-btn').addEventListener('click', continueToNextRound);
-document.getElementById('restart-btn').addEventListener('click', restartGame);
+document.getElementById('easy-btn').addEventListener('click', () => {
+  playSound(SOUND_MENU_CLICK);
+  startGameWithDifficulty(5);
+});
+document.getElementById('medium-btn').addEventListener('click', () => {
+  playSound(SOUND_MENU_CLICK);
+  startGameWithDifficulty(7);
+});
+document.getElementById('hard-btn').addEventListener('click', () => {
+  playSound(SOUND_MENU_CLICK);
+  startGameWithDifficulty(10);
+});
+document.getElementById('continue-btn').addEventListener('click', () => {
+  playSound(SOUND_MENU_CLICK);
+  continueToNextRound();
+});
+document.getElementById('restart-btn').addEventListener('click', () => {
+  playSound(SOUND_MENU_CLICK);
+  restartGame();
+});
 window.addEventListener('resize', () => {
   if (gameActive) {
     placeWaterSource();
